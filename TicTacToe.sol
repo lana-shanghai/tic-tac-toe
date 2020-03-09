@@ -77,11 +77,11 @@ contract TicTacToe {
         require(x_axis < 3 && x_axis >= 0);
         require(y_axis < 3 && y_axis >= 0);
         require(games[index].isActive == true); // check that the game is active
+        require(games[index].moves[y_axis][x_axis] == 0); // make sure that the move to this location hasn't been made yet
         require(msg.sender != games[index].firstPlayer);
         require(games[index].firstPlayer == games[index].secondPlayer); // check that the second player hasn't made a move yet
         address secondPlayer = msg.sender; // assign the sender of the message to the second player
         games[index].secondPlayer = secondPlayer;
-        require(games[index].moves[y_axis][x_axis] == 0); // make sure that the move to this location hasn't been made yet
         games[index].moves[y_axis][x_axis] = 2;
         games[index].lastPlayer = secondPlayer;
     }
@@ -92,9 +92,9 @@ contract TicTacToe {
         require(x_axis < 3 && x_axis >= 0);
         require(y_axis < 3 && y_axis >= 0);
         require(games[index].isActive == true); // check that the game is active
+        require(games[index].moves[y_axis][x_axis] == 0); // make sure that the move to this location hasn't been made yet
         require(!(games[index].lastPlayer == msg.sender)); // make sure that a player isn't doing a second move in a row
         require(games[index].firstPlayer == msg.sender || games[index].secondPlayer == msg.sender); // check that a third player isn't trying to make a move;
-        require(games[index].moves[y_axis][x_axis] == 0); // make sure that the move to this location hasn't been made yet
         if (games[index].firstPlayer == msg.sender) {
             games[index].moves[y_axis][x_axis] = 1;
             games[index].lastPlayer = msg.sender;
