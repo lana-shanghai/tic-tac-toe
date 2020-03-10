@@ -11,11 +11,12 @@ The number of the game is automatically assigned to the initiated game based on 
 Any player can continue the game.
 The second player cannot be the same address that initialized the game. 
 
-## Make moves until one of the players wins 
+## Make moves until one of the players wins or a tie occurs
 
 A third address cannot make a move. 
 An address that made the last move also cannot make a move. 
 Once a player wins, the active status of the game is set to false, and no more moves can be made. 
+If a tie occurs, the last player is set to 0 and the game status is set to false. 
 
 ## View previous games
 
