@@ -25,6 +25,12 @@ contract TicTacToe {
     
     /* @dev function to check if one of the players won the game */
     
+    modifier validMove(uint256 x_axis, uint256 y_axis) {
+        require(x_axis < 3 && x_axis >= 0);
+        require(y_axis < 3 && y_axis >= 0);
+        _;
+    }
+    
     function checkIfWon(uint256 index) private view returns (bool) {
         Game storage game = games[index];
         
@@ -65,9 +71,7 @@ contract TicTacToe {
     
     /* @dev a game starts by any player initiating a new game */
     
-    function startGame(uint256 x_axis, uint256 y_axis) public returns (string memory, uint256) {
-        require(x_axis < 3 && x_axis >= 0);
-        require(y_axis < 3 && y_axis >= 0);
+    function startGame(uint256 x_axis, uint256 y_axis) public validMove(x_axis, y_axis) returns (string memory, uint256) {
         uint256 index = game_idx.length;
         address firstPlayer = msg.sender;
         games[index] = Game(
@@ -84,30 +88,19 @@ contract TicTacToe {
         return("Game number: ", index);
     }
     
-    /* @dev any player except the one that started the game can join the game by making a second move */
-
-    function makeSecondMove(uint256 index, uint256 x_axis, uint256 y_axis) public {
-        require(x_axis < 3 && x_axis >= 0);
-        require(y_axis < 3 && y_axis >= 0);
-        require(games[index].isActive == true); // check that the game is active
-        require(msg.sender != games[index].firstPlayer);
-        require(games[index].firstPlayer == games[index].secondPlayer); // check that the second player hasn't made a move yet
-        address secondPlayer = msg.sender; // assign the sender of the message to the second player
-        games[index].secondPlayer = secondPlayer;
-        require(games[index].moves[y_axis][x_axis] == 0); // make sure that the move to this location hasn't been made yet
-        games[index].moves[y_axis][x_axis] = 2;
-        games[index].lastPlayer = secondPlayer;
-    }
+    /* @dev only a player different to the first can continue the game; a third player cannot continue the game */
     
-    /* @dev only the 1st & 2nd players can continue the game */
-    
-    function makeMove(uint256 index, uint256 x_axis, uint256 y_axis) public {
-        require(x_axis < 3 && x_axis >= 0);
-        require(y_axis < 3 && y_axis >= 0);
+    function makeMove(uint256 index, uint256 x_axis, uint256 y_axis) public validMove(x_axis, y_axis) {
         require(games[index].isActive == true); // check that the game is active
         require(!(games[index].lastPlayer == msg.sender)); // make sure that a player isn't doing a second move in a row
-        require(games[index].firstPlayer == msg.sender || games[index].secondPlayer == msg.sender); // check that a third player isn't trying to make a move;
         require(games[index].moves[y_axis][x_axis] == 0); // make sure that the move to this location hasn't been made yet
+        
+        if (games[index].firstPlayer == games[index].secondPlayer && msg.sender != games[index].firstPlayer) {
+            games[index].secondPlayer = msg.sender;  // assign the sender of the message to the second player
+        } else {
+            require(games[index].firstPlayer == msg.sender || games[index].secondPlayer == msg.sender); // check that a third player isn't trying to make a move;
+        }
+        
         if (games[index].firstPlayer == msg.sender) {
             games[index].moves[y_axis][x_axis] = 1;
             games[index].lastPlayer = msg.sender;
