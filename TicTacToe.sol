@@ -23,14 +23,14 @@ contract TicTacToe {
     uint256[] public game_idx; // array of the game numbers
     mapping(uint256 => Game) public games; // number of the game and the corresponding game data
     
-    /* @dev function to check if one of the players won the game */
-    
     modifier validMove(uint256 x_axis, uint256 y_axis) {
         require(x_axis < 3 && x_axis >= 0);
         require(y_axis < 3 && y_axis >= 0);
         _;
     }
     
+    /* @dev function to check if one of the players won the game */
+
     function checkIfWon(uint256 index) private view returns (bool) {
         Game storage game = games[index];
         
