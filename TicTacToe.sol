@@ -57,6 +57,7 @@ contract TicTacToe {
     }
     
     function checkIfTie(uint256 index) private view returns (bool) {
+        require(checkIfWon(index) == false);
         Game storage game = games[index];
         
         // check to see if there are still available moves
