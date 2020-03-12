@@ -1,0 +1,30 @@
+Using network 'development'.
+
+
+Compiling your contracts...
+===========================
+> Compiling ./test/TestTicTacToe.sol
+> Artifacts written to /var/folders/q2/c520q17j72q4_s2r5b49_nhr0000gn/T/test-2020212-85479-14nkvip.veny
+> Compiled successfully using:
+   - solc: 0.5.16+commit.9c3226ce.Emscripten.clang
+
+
+[0m[0m
+[0m  TestTicTacToe[0m
+  [32m  ✓[0m[90m testStartGame[0m[31m (114ms)[0m
+
+[0m  Contract: TicTacToe[0m
+  [32m  ✓[0m[90m starts a game[0m[31m (79ms)[0m
+  [32m  ✓[0m[90m does not allow two moves in a row for the same address[0m
+  [32m  ✓[0m[90m changes the second player to the message sender correctly[0m[31m (386ms)[0m
+  [32m  ✓[0m[90m does not let a third player make a move[0m
+  [32m  ✓[0m[90m does not allow a move onto a field that is already taken[0m[31m (126ms)[0m
+  [32m  ✓[0m[90m sets game status to false and logs the last player if the game is won[0m[31m (429ms)[0m
+  [32m  ✓[0m[90m sets game status to false and the last player to 0 if there is a tie[0m[31m (456ms)[0m
+  [32m  ✓[0m[90m does not allow a move after the game is won[0m
+  [32m  ✓[0m[90m emits GameFinished when the game is won[0m[31m (566ms)[0m
+  [32m  ✓[0m[90m emits GameFinished when there is a tie[0m[31m (458ms)[0m
+
+
+[92m [0m[32m 11 passing[0m[90m (8s)[0m
+

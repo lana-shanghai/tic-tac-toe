@@ -1,4 +1,4 @@
-pragma solidity ^0.6.0;
+pragma solidity ^0.5.16;
 
 import "./SafeMath.sol";
 
@@ -8,7 +8,8 @@ contract TicTacToe {
 
     /* events */
     
-    event GameStarted(uint256);
+    event GameStarted(uint256, bool, address, uint8[3][3]);
+    event Move(uint256, bool, address, uint8[3][3]);
     event GameFinished(uint256);
     
     struct Game {
@@ -57,7 +58,6 @@ contract TicTacToe {
     }
     
     function checkIfTie(uint256 index) private view returns (bool) {
-        require(checkIfWon(index) == false);
         Game storage game = games[index];
         
         // check to see if there are still available moves
@@ -72,7 +72,7 @@ contract TicTacToe {
     
     /* @dev a game starts by any player initiating a new game */
     
-    function startGame(uint256 x_axis, uint256 y_axis) public validMove(x_axis, y_axis) returns (string memory, uint256) {
+    function startGame(uint256 x_axis, uint256 y_axis) public validMove(x_axis, y_axis) returns (uint256) {
         uint256 index = game_idx.length;
         address firstPlayer = msg.sender;
         games[index] = Game(
@@ -84,9 +84,10 @@ contract TicTacToe {
             [[0,0,0], [0,0,0], [0,0,0]]
             );
         games[index].moves[y_axis][x_axis] = 1;
+        uint8[3][3] memory currentBoard = games[index].moves;
         game_idx.push(game_idx.length);
-        emit GameStarted(index);
-        return("Game number: ", index);
+        emit GameStarted(index, true, msg.sender, currentBoard);
+        return(index);
     }
     
     /* @dev only a player different to the first can continue the game; a third player cannot continue the game */
@@ -110,6 +111,8 @@ contract TicTacToe {
             games[index].moves[y_axis][x_axis] = 2;
             games[index].lastPlayer = msg.sender;
         }
+        uint8[3][3] memory currentBoard = games[index].moves;
+        emit Move(index, true, msg.sender, currentBoard);
         // if a player has won set the status of the game to inactive, the winner will be saved as the last player of the game
         if (checkIfWon(index) == true) {
             games[index].isActive = false;
