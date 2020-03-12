@@ -9,7 +9,7 @@ The number of the game is automatically assigned to the initiated game based on 
 
 ## Continue the game 
 
-Any player can continue the game by passing 3 parameters: the number of the game, and the x and y coordinates.
+Any player can continue the game by calling makeMove and passing 3 parameters: the number of the game, and the x and y coordinates.
 The second player cannot be the same address that initialized the game. 
 
 ## Make moves until one of the players wins or a tie occurs
